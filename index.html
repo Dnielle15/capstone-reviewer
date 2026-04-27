@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Proposal Defense Reviewer — Scholarship System</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap");
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      :root {
+        --navy: #07111f;
+        --navy2: #0c1e33;
+        --card: #0f2640;
+        --border: #1a3a5c;
+        --blue: #1b7fc4;
+        --cyan: #00b4d8;
+        --gold: #f4c430;
+        --green: #00c896;
+        --red: #ff4d6d;
+        --white: #f0f6ff;
+        --muted: #7a9bbf;
+        --text: #ccdff0;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        font-family: "DM Sans", sans-serif;
+        background: var(--navy);
+        color: var(--text);
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-image: linear-gradient(
+            rgba(27, 127, 196, 0.04) 1px,
+            transparent 1px
+          ),
+          linear-gradient(90deg, rgba(27, 127, 196, 0.04) 1px, transparent 1px);
+        background-size: 40px 40px;
+        pointer-events: none;
+        z-index: 0;
+      }
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background: rgba(7, 17, 31, 0.93);
+        backdrop-filter: blur(16px);
+        border-bottom: 1px solid var(--border);
+        padding: 0 28px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 58px;
+      }
+      .logo {
+        font-family: "Syne", sans-serif;
+        font-weight: 800;
+        font-size: 14px;
+        color: var(--white);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .logo-badge {
+        background: var(--blue);
+        color: #fff;
+        font-size: 9px;
+        font-weight: 700;
+        padding: 3px 8px;
+        border-radius: 4px;
+        letter-spacing: 0.08em;
+      }
+      .progress-wrap {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 12px;
+        color: var(--muted);
+      }
+      #pb-outer {
+        width: 150px;
+        height: 5px;
+        background: var(--border);
+        border-radius: 99px;
+        overflow: hidden;
+      }
+      #pb-inner {
+        height: 100%;
+        background: linear-gradient(90deg, var(--blue), var(--cyan));
+        border-radius: 99px;
+        width: 0%;
+        transition: width 0.4s ease;
+      }
+      .hero {
+        position: relative;
+        z-index: 1;
+        padding: 56px 28px 40px;
+        max-width: 860px;
+        margin: 0 auto;
+        text-align: center;
+      }
+      .hero-tag {
+        display: inline-block;
+        border: 1px solid var(--border);
+        color: var(--cyan);
+        font-size: 10px;
+        font-weight: 500;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        padding: 5px 16px;
+        border-radius: 99px;
+        margin-bottom: 18px;
+        background: rgba(0, 180, 216, 0.07);
+      }
+      .hero h1 {
+        font-family: "Syne", sans-serif;
+        font-size: clamp(26px, 5vw, 42px);
+        font-weight: 800;
+        color: var(--white);
+        line-height: 1.15;
+        margin-bottom: 12px;
+      }
+      .hero h1 span {
+        color: var(--gold);
+      }
+      .hero p {
+        font-size: 14px;
+        color: var(--muted);
+        line-height: 1.7;
+        max-width: 580px;
+        margin: 0 auto 28px;
+      }
+      .hero-stats {
+        display: flex;
+        justify-content: center;
+        gap: 36px;
+        flex-wrap: wrap;
+      }
+      .stat {
+        text-align: center;
+      }
+      .stat-num {
+        font-family: "Syne", sans-serif;
+        font-size: 30px;
+        font-weight: 800;
+        color: var(--blue);
+      }
+      .stat-lbl {
+        font-size: 11px;
+        color: var(--muted);
+        margin-top: 2px;
+      }
+      .tabs-wrap {
+        position: relative;
+        z-index: 1;
+        max-width: 920px;
+        margin: 0 auto 10px;
+        padding: 0 22px;
+        display: flex;
+        gap: 7px;
+        flex-wrap: wrap;
+      }
+      .tab-btn {
+        padding: 7px 15px;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        background: transparent;
+        color: var(--muted);
+        font-size: 12px;
+        font-family: "DM Sans", sans-serif;
+        cursor: pointer;
+        transition: all 0.2s;
+        white-space: nowrap;
+      }
+      .tab-btn:hover {
+        border-color: var(--blue);
+        color: var(--white);
+      }
+      .tab-btn.active {
+        background: var(--blue);
+        border-color: var(--blue);
+        color: #fff;
+        font-weight: 500;
+      }
+      .main {
+        position: relative;
+        z-index: 1;
+        max-width: 920px;
+        margin: 0 auto;
+        padding: 0 22px 80px;
+      }
+      .section {
+        display: none;
+      }
+      .section.active {
+        display: block;
+      }
+      .section-header {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 18px;
+        padding: 18px 0 14px;
+        border-bottom: 1px solid var(--border);
+      }
+      .section-icon {
+        width: 42px;
+        height: 42px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        flex-shrink: 0;
+      }
+      .section-title {
+        font-family: "Syne", sans-serif;
+        font-size: 19px;
+        font-weight: 700;
+        color: var(--white);
+      }
+      .section-sub {
+        font-size: 11.5px;
+        color: var(--muted);
+        margin-top: 3px;
+      }
+      .q-card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 13px;
+        margin-bottom: 12px;
+        overflow: hidden;
+        transition: border-color 0.2s;
+      }
+      .q-card:hover {
+        border-color: var(--blue);
+      }
+      .q-card.revealed {
+        border-color: var(--green);
+      }
+      .q-header {
+        padding: 16px 18px;
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 14px;
+        cursor: pointer;
+      }
+      .q-left {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+      }
+      .q-num {
+        width: 26px;
+        height: 26px;
+        border-radius: 7px;
+        background: var(--border);
+        color: var(--blue);
+        font-family: "Syne", sans-serif;
+        font-weight: 700;
+        font-size: 11px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        margin-top: 1px;
+        transition: all 0.2s;
+      }
+      .q-card.revealed .q-num {
+        background: var(--green);
+        color: var(--navy);
+      }
+      .q-text {
+        font-size: 13.5px;
+        font-weight: 500;
+        color: var(--white);
+        line-height: 1.5;
+        flex: 1;
+      }
+      .q-right {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 5px;
+        flex-shrink: 0;
+      }
+      .q-badge {
+        font-size: 9.5px;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        padding: 3px 8px;
+        border-radius: 5px;
+        white-space: nowrap;
+      }
+      .badge-hot {
+        background: rgba(255, 77, 109, 0.14);
+        color: var(--red);
+        border: 1px solid rgba(255, 77, 109, 0.28);
+      }
+      .badge-key {
+        background: rgba(244, 196, 48, 0.11);
+        color: var(--gold);
+        border: 1px solid rgba(244, 196, 48, 0.28);
+      }
+      .badge-tech {
+        background: rgba(0, 180, 216, 0.1);
+        color: var(--cyan);
+        border: 1px solid rgba(0, 180, 216, 0.22);
+      }
+      .badge-std {
+        background: rgba(27, 127, 196, 0.1);
+        color: var(--blue);
+        border: 1px solid rgba(27, 127, 196, 0.22);
+      }
+      .reveal-btn {
+        padding: 6px 14px;
+        border-radius: 7px;
+        border: 1px solid var(--border);
+        background: transparent;
+        color: var(--muted);
+        font-size: 11px;
+        font-family: "DM Sans", sans-serif;
+        cursor: pointer;
+        white-space: nowrap;
+        flex-shrink: 0;
+        transition: all 0.2s;
+      }
+      .reveal-btn:hover {
+        border-color: var(--blue);
+        color: var(--white);
+      }
+      .q-card.revealed .reveal-btn {
+        background: rgba(0, 200, 150, 0.1);
+        border-color: var(--green);
+        color: var(--green);
+      }
+      .q-answer {
+        display: none;
+        border-top: 1px solid var(--border);
+        padding: 16px 18px 18px;
+        background: rgba(0, 0, 0, 0.18);
+      }
+      .q-answer.open {
+        display: block;
+      }
+      .answer-label {
+        font-size: 9.5px;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        color: var(--green);
+        text-transform: uppercase;
+        margin-bottom: 9px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .answer-label::before {
+        content: "";
+        width: 10px;
+        height: 2px;
+        background: var(--green);
+        border-radius: 99px;
+      }
+      .answer-text {
+        font-size: 13px;
+        line-height: 1.75;
+        color: var(--text);
+      }
+      .answer-text strong {
+        color: var(--white);
+        font-weight: 500;
+      }
+      .answer-text em {
+        color: var(--cyan);
+        font-style: normal;
+      }
+      .answer-text .highlight {
+        background: rgba(244, 196, 48, 0.08);
+        border-left: 3px solid var(--gold);
+        padding: 10px 14px;
+        border-radius: 0 8px 8px 0;
+        margin: 10px 0;
+        font-size: 12.5px;
+        color: var(--white);
+      }
+      .answer-text ul {
+        margin: 8px 0 4px;
+        padding-left: 0;
+        list-style: none;
+      }
+      .answer-text ul li {
+        padding: 3px 0 3px 18px;
+        position: relative;
+        font-size: 13px;
+      }
+      .answer-text ul li::before {
+        content: "→";
+        position: absolute;
+        left: 0;
+        color: var(--blue);
+        font-weight: 700;
+      }
+      .tip-box {
+        background: rgba(27, 127, 196, 0.08);
+        border: 1px solid rgba(27, 127, 196, 0.22);
+        border-radius: 9px;
+        padding: 12px 15px;
+        margin-top: 12px;
+        font-size: 12px;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+      .tip-box strong {
+        color: var(--cyan);
+      }
+      .reveal-all-btn {
+        padding: 8px 18px;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        background: transparent;
+        color: var(--muted);
+        font-size: 11px;
+        font-family: "DM Sans", sans-serif;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: block;
+        margin: 0 0 16px auto;
+      }
+      .reveal-all-btn:hover {
+        border-color: var(--cyan);
+        color: var(--cyan);
+      }
+      .section-nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 0 6px;
+        border-top: 1px solid var(--border);
+        margin-top: 20px;
+      }
+      .nav-btn {
+        padding: 9px 18px;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        background: transparent;
+        color: var(--white);
+        font-size: 12px;
+        font-family: "DM Sans", sans-serif;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 7px;
+      }
+      .nav-btn:hover {
+        background: var(--border);
+      }
+      .nav-btn.primary {
+        background: var(--blue);
+        border-color: var(--blue);
+      }
+      .nav-btn.primary:hover {
+        background: #1570ae;
+      }
+      .nav-btn:disabled {
+        opacity: 0.3;
+        cursor: not-allowed;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="logo">
+        <div class="logo-badge">BSIT</div>
+        Proposal Defense Reviewer
+      </div>
+      <div class="progress-wrap">
+        <span id="ptxt">0% ready</span>
+        <div id="pb-outer"><div id="pb-inner"></div></div>
+      </div>
+    </header>
+
+    <div class="hero">
+      <div class="hero-tag">
+        Web-Based Scholarship System · Municipality of Sta. Praxedes
+      </div>
+      <h1>Know Your <span>Capstone</span><br />Inside & Out</h1>
+      <p>
+        Practice every question the panel might ask. Reveal the ideal answer,
+        track your readiness, and walk into your defense with confidence.
+      </p>
+      <div class="hero-stats">
+        <div class="stat">
+          <div class="stat-num" id="tq">0</div>
+          <div class="stat-lbl">Questions</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num" id="rq">0</div>
+          <div class="stat-lbl">Reviewed</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">6</div>
+          <div class="stat-lbl">Topics</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tabs-wrap" id="tabs"></div>
+    <div class="main" id="main"></div>
+
+    <script>
+      const S = [
+        {
+          id: "overview",
+          icon: "🎯",
+          ibg: "#1a3a6b",
+          title: "The Big Picture",
+          sub: "What your system is, why it exists, problems it solves",
+          questions: [
+            {
+              q: "What is your capstone project about? Explain in 2-3 sentences.",
+              badge: "key",
+              a: `Our capstone is a <strong>Web-Based Scholarship Application and Requirements Management System for the Municipality of Sta. Praxedes</strong>. It digitizes the entire scholarship process — from online application submission and document uploading to administrative verification and real-time status tracking. It replaces the current manual, paper-based LGU process to make scholarship management more efficient, transparent, and accessible.`,
+              tip: "Always say the full system name first. Start confidently — not with 'It is a system that...'",
+            },
+            {
+              q: "What specific problem does your system solve?",
+              badge: "hot",
+              a: `The current process is fully manual. Applicants visit the office physically, submit paper documents, and LGU staff check completeness by hand. This causes four key problems: <strong>(1)</strong> no real-time tracking of application status, <strong>(2)</strong> risk of misplaced or lost documents, <strong>(3)</strong> slow, time-consuming verification, and <strong>(4)</strong> difficulty generating consolidated reports. Our system eliminates all four through a centralized digital platform.`,
+              tip: "Enumerate the problems clearly — panels expect specificity, not vague answers.",
+            },
+            {
+              q: "Why did you choose the Municipality of Sta. Praxedes as your locale?",
+              badge: "std",
+              a: `Sta. Praxedes relies entirely on a manual scholarship application process with no existing digital system. Our interviews with the scholarship coordinator confirmed the presence of inefficiencies and expressed need for a digital solution. The municipality's situation made it a practical, relevant, and impactful setting for our capstone.`,
+            },
+            {
+              q: "Who will benefit from your system and how?",
+              badge: "std",
+              a: `Five groups benefit: <ul><li><strong>LGU</strong> — efficient processing, automated reports, reduced paperwork</li><li><strong>Scholarship Coordinators</strong> — digital checklist-based verification, no manual folder sorting</li><li><strong>Student Applicants</strong> — online submission, no repeated office visits, real-time tracking</li><li><strong>Researchers</strong> — enhanced technical skills in web-based system development</li><li><strong>Future Researchers</strong> — reference for similar LGU digitalization studies</li></ul>`,
+            },
+          ],
+        },
+        {
+          id: "objectives",
+          icon: "📌",
+          ibg: "#0a4a3a",
+          title: "Objectives & Scope",
+          sub: "What the study aims to achieve and its boundaries",
+          questions: [
+            {
+              q: "What is your general objective?",
+              badge: "key",
+              a: `<div class="highlight">To design and develop a Web-Based Scholarship Application and Requirements Management System for the Municipality of Sta. Praxedes.</div>`,
+              tip: "Memorize this word-for-word. The panel will definitely ask this.",
+            },
+            {
+              q: "State your specific objectives.",
+              badge: "hot",
+              a: `Specifically, the study aims to: <ul><li>Determine the current scholarship application process in terms of application submission, document verification, and status tracking.</li><li>Identify the problems in terms of processing delays, difficulty managing requirements, and lack of real-time tracking.</li><li>Identify the requirements needed for designing and developing the proposed system.</li><li>Develop the Web-Based Scholarship Application and Requirements Management System for the Municipality of Sta. Praxedes.</li></ul>`,
+              tip: "Objectives 1 & 2 = AS-IS analysis. Objective 3 = requirements. Objective 4 = development. Panelists sometimes ask why there's no evaluation objective — answer: evaluation is in the methodology.",
+            },
+            {
+              q: "What is included in your system and what is not (scope and limitation)?",
+              badge: "key",
+              a: `<strong>Scope:</strong> Online registration & login, online application submission, digital document uploading per checklist, admin document verification, real-time status tracking, automated notifications, scholarship program management, and report generation.<br><br><strong>Limitations:</strong> No automated ranking, no disbursement processing, no automated decision-making. Final approval stays with the Municipal Mayor. System covers only Sta. Praxedes.`,
+              tip: "If asked 'What if the mayor is unavailable?' — clarify the system facilitates the process but does not replace the authority of the approving official.",
+            },
+            {
+              q: "Why did you not include automated approval in your system?",
+              badge: "hot",
+              a: `Scholarship approval requires human judgment — it involves discretion, verification of eligibility beyond documents, and municipal governance accountability. Automating this would bypass the established authority of the Municipal Mayor. Our system supports and streamlines the process; it does not replace human decision-making in critical governance functions.`,
+            },
+          ],
+        },
+        {
+          id: "methodology",
+          icon: "⚙️",
+          ibg: "#2a1a5e",
+          title: "Methodology",
+          sub: "RAD, data gathering, AS-IS, TO-BE, respondents",
+          questions: [
+            {
+              q: "What research design did you use and why?",
+              badge: "hot",
+              a: `We used <strong>Rapid Application Development (RAD)</strong> methodology because it emphasizes fast development, continuous user involvement, and iterative refinement — all appropriate for developing a practical information system within a limited timeframe. RAD ensures the system meets real user needs through constant feedback cycles with LGU staff and student applicants.`,
+            },
+            {
+              q: "Explain each phase of RAD and what you did in each.",
+              badge: "hot",
+              a: `<ul><li><strong>Requirements Planning</strong> — submitted request letter, conducted interviews and observations at the LGU to document the current process and identify problems.</li><li><strong>User Design</strong> — created wireframes and prototypes, consulted LGU staff and applicants for feedback and iterated until the design met their needs.</li><li><strong>Construction</strong> — developed the system using native PHP and MySQL based on documented requirements and approved prototypes.</li><li><strong>Cutover</strong> — conducted testing, user acceptance evaluation using ISO 25010, and prepared for deployment.</li></ul>`,
+              tip: "Don't just list the phases — say what YOU specifically did in each phase for this project.",
+            },
+            {
+              q: "What data gathering methods did you use?",
+              badge: "std",
+              a: `Three methods: <ul><li><strong>Interview</strong> — structured questions for the Mayor and Coordinator to document the current process and requirements.</li><li><strong>Observation</strong> — site visits to the LGU office to validate interview data and observe actual workflows.</li><li><strong>Survey Questionnaire (ISO 25010)</strong> — to evaluate the developed system's quality across functionality, usability, reliability, security, and performance.</li></ul>`,
+            },
+            {
+              q: "Explain the difference between AS-IS and TO-BE processes.",
+              badge: "key",
+              a: `<strong>AS-IS (current):</strong> Applicants visit the office, fill paper forms, submit physical documents, LGU manually checks completeness using a paper checklist, forwards to the Mayor, and results are posted on social media or notice boards.<br><br><strong>TO-BE (proposed):</strong> Applicants register and apply online, upload documents digitally, admin verifies via the system, Mayor approves digitally, and the system automatically notifies applicants. All records are centralized in a MySQL database.`,
+              tip: "Key improvements to highlight: no physical visits needed, real-time tracking, automated notifications, centralized records.",
+            },
+            {
+              q: "Who are your respondents and how many?",
+              badge: "std",
+              a: `Purposive sampling was used. Respondents are: <ul><li><strong>Municipal Mayor</strong> — 1</li><li><strong>Scholarship Coordinator</strong> — 1</li><li><strong>LGU Personnel</strong> — 3–5</li><li><strong>Student Applicants</strong> — 10–15</li></ul> These were selected because they are directly involved in the scholarship application process and are the actual users or decision-makers for the proposed system.`,
+            },
+            {
+              q: "What research instruments did you use?",
+              badge: "std",
+              a: `<ul><li><strong>Interview Guide</strong> — structured questions for the Mayor and Coordinator to document the current process and identify problems.</li><li><strong>Observation Checklist</strong> — validated interview data through direct observation during site visits.</li><li><strong>Survey Questionnaire (ISO 25010)</strong> — measures system quality: Functionality, Usability, Reliability, Security, Performance.</li></ul>`,
+            },
+            {
+              q: "How will you analyze your data?",
+              badge: "std",
+              a: `<ul><li><strong>Frequency & Percentage</strong> — to describe respondent profiles and current practices.</li><li><strong>Weighted Mean & Standard Deviation</strong> — to measure system acceptability using ISO 25010 criteria.</li><li><strong>Descriptive Analysis</strong> — to document requirements from interviews and observations.</li><li><strong>Process Modeling</strong> — AS-IS and TO-BE swimlane diagrams, Context Diagram, DFD, and ERD.</li></ul>`,
+            },
+          ],
+        },
+        {
+          id: "technical",
+          icon: "💻",
+          ibg: "#1a3a0a",
+          title: "Technical Background",
+          sub: "Technologies, database, system architecture",
+          questions: [
+            {
+              q: "What technologies did you use and why?",
+              badge: "tech",
+              a: `<ul><li><strong>Native PHP</strong> — server-side scripting without a framework; full control over logic, routing, and database operations. Practical for this scale.</li><li><strong>MySQL</strong> — reliable relational DBMS for storing all system data (users, applications, documents, notifications).</li><li><strong>JavaScript</strong> — front-end interactivity and dynamic content.</li><li><strong>XAMPP</strong> — local server during development and testing.</li><li><strong>Visual Studio Code</strong> — primary IDE for development.</li></ul>`,
+            },
+            {
+              q: "Why did you choose native PHP over a framework like Laravel?",
+              badge: "tech",
+              a: `Native PHP gives us full visibility and control over the system without framework overhead. For a system of this scale, it is practical and lightweight. It also demonstrates our foundational understanding of server-side programming. A framework would add unnecessary complexity and dependencies for this scope.`,
+              tip: "Be confident with this answer. It shows you made a deliberate, informed choice.",
+            },
+            {
+              q: "Explain your database design. What tables do you have?",
+              badge: "tech",
+              a: `Our database has 8 tables: <ul><li><strong>tbl_users</strong> — applicant information (name, email, credentials)</li><li><strong>tbl_administrator</strong> — admin credentials and access</li><li><strong>tbl_scholarship</strong> — scholarship programs, descriptions, slots</li><li><strong>tbl_application</strong> — links applicants to scholarships, tracks status</li><li><strong>tbl_requirement_list</strong> — predefined documents required per scholarship</li><li><strong>tbl_requirements</strong> — uploaded files and their verification status</li><li><strong>tbl_notification</strong> — messages sent to applicants</li><li><strong>tbl_application_log</strong> — history of every status change for accountability</li></ul>`,
+            },
+            {
+              q: "What is the purpose of tbl_application_log?",
+              badge: "tech",
+              a: `It records every status change made to a scholarship application — what the status changed to and when. This creates a traceable audit trail for accountability and monitoring. Any action taken by the administrator is logged and can be reviewed, ensuring transparency and data integrity.`,
+            },
+            {
+              q: "What are the 6 modules of your system?",
+              badge: "key",
+              a: `<ul><li><strong>User Management</strong> — registration, login, role-based access</li><li><strong>Scholarship Management</strong> — create and manage scholarship programs and slots</li><li><strong>Application Management</strong> — submit, review, approve or reject applications</li><li><strong>Requirements Management</strong> — upload and verify documentary requirements</li><li><strong>Notification Management</strong> — automated alerts for status changes and missing docs</li><li><strong>Reporting Module</strong> — generate applicant summaries and compliance reports</li></ul>`,
+            },
+            {
+              q: "What is role-based access control and how does your system use it?",
+              badge: "tech",
+              a: `RBAC restricts system functions based on a user's assigned role. We have two roles: <strong>Applicant</strong> (can register, apply, upload documents, view own status) and <strong>Administrator</strong> (can manage all applications, verify documents, update statuses, manage scholarships, generate reports). This ensures data confidentiality and prevents unauthorized modifications.`,
+            },
+            {
+              q: "What is ISO 25010 and why did you use it for evaluation?",
+              badge: "key",
+              a: `ISO/IEC 25010 is an international software quality standard defining five evaluation criteria: <strong>Functionality</strong> (does it perform its intended functions?), <strong>Usability</strong> (is it easy to use?), <strong>Reliability</strong> (does it work consistently?), <strong>Security</strong> (is it protected?), and <strong>Performance</strong> (is it fast and responsive?). We chose it because it provides a comprehensive, internationally recognized framework appropriate for a formal academic evaluation.`,
+            },
+            {
+              q: "What is the difference between functional and non-functional requirements?",
+              badge: "tech",
+              a: `<strong>Functional requirements</strong> describe WHAT the system does — specific features like 'The system should allow applicants to upload documents.' These are captured in our user requirements, flowcharts, and DFD.<br><br><strong>Non-functional requirements</strong> describe HOW WELL it does it — quality attributes like response time, security level, and usability. These are evaluated using our ISO 25010 survey questionnaire.`,
+            },
+          ],
+        },
+        {
+          id: "literature",
+          icon: "📚",
+          ibg: "#3a1a0a",
+          title: "Related Literature",
+          sub: "How your study differs from and builds on existing work",
+          questions: [
+            {
+              q: "What is your research gap?",
+              badge: "hot",
+              a: `No existing study addresses the specific needs of a <strong>municipality-level LGU scholarship process</strong> with integrated requirements management and real-time tracking in the Philippine context. Most studies focus on university-level or national scholarship systems. Our study fills this gap by developing a system tailored to the operational reality of a local government unit.`,
+              tip: "This is one of the most important things to be confident about. If the panel asks 'Is there really no existing system like this?' — acknowledge that similar systems exist but not one specifically addressing municipality-level LGU scholarship management with this feature set.",
+            },
+            {
+              q: "What related studies support your study?",
+              badge: "std",
+              a: `<ul><li><strong>Daluyon & Bilog (2025)</strong> — traditional scholarship systems lack efficiency due to fragmented manual processes, poor data accuracy, and delays. Directly supports our problem.</li><li><strong>Mendez et al. (2025)</strong> — proper management of documentary requirements is essential for effective scholarship administration. Supports our requirements management feature.</li><li><strong>Olipas et al. (2019)</strong> — web-based systems in LGU governance improve transparency, accountability, and efficiency. Supports our overall approach.</li></ul>`,
+            },
+            {
+              q: "How is your system different from existing scholarship systems?",
+              badge: "key",
+              a: `Three key differences: <strong>(1)</strong> We target a municipality-level LGU context, which is underrepresented in existing research; <strong>(2)</strong> We integrate a structured per-scholarship document checklist with per-document verification status tracking — most systems only check overall completeness; <strong>(3)</strong> We address the specific governance structure of a Philippine municipal LGU, including the Mayor's approval role and coordination between the Budget Office, LYDO, and Scholarship Coordinator.`,
+            },
+          ],
+        },
+        {
+          id: "hardquestions",
+          icon: "🔥",
+          ibg: "#4a0a0a",
+          title: "🔥 Hard Panel Questions",
+          sub: "The tough ones — practice these until you're confident",
+          questions: [
+            {
+              q: "Why not just use Google Forms or Excel? It would be simpler and free.",
+              badge: "hot",
+              a: `Google Forms and Excel lack critical features: they cannot enforce a structured document checklist per scholarship, do not have role-based access control, cannot send automated status notifications, do not maintain an audit trail of application history, and cannot generate structured administrative reports. Our system integrates all these in a single, purpose-built platform designed specifically for the scholarship workflow of Sta. Praxedes.`,
+              tip: "Never be dismissive. The panel is testing whether you truly understand the value of your system over existing tools.",
+            },
+            {
+              q: "What if there is no internet connection at the LGU office?",
+              badge: "hot",
+              a: `This is a valid concern. Our system is web-based and requires connectivity. However, it can be deployed on a local server (intranet), allowing it to function on a local network without full internet. In our implementation plan, we recommend the LGU ensure stable connectivity or consider a local server setup. We have documented this as part of the infrastructure requirements.`,
+            },
+            {
+              q: "How do you ensure the security of applicant data?",
+              badge: "hot",
+              a: `We implement: <ul><li><strong>Password hashing</strong> — passwords stored encrypted, not as plain text</li><li><strong>Role-based access control</strong> — applicants access only their own data</li><li><strong>HTTPS recommendation</strong> — encrypts data transmission between client and server</li><li><strong>Session management</strong> — sessions validated to prevent unauthorized access</li><li><strong>Input validation & sanitization</strong> — prevents SQL injection and other attacks</li></ul>`,
+            },
+            {
+              q: "What if the LGU doesn't adopt the system after you develop it?",
+              badge: "hot",
+              a: `Our implementation plan includes: orientation and training for LGU staff, a comprehensive Users Manual, and an initial technical support period. We will provide an acknowledgment receipt to formalize handover. We recommend running the system in parallel with the manual process initially. We acknowledge full adoption depends on the LGU's willingness, but we have prepared all necessary materials to facilitate a smooth transition.`,
+            },
+            {
+              q: "How did you validate that the requirements you gathered are correct?",
+              badge: "key",
+              a: `Two validation approaches: <strong>(1) Member checking</strong> — after documenting interview results, we reviewed our findings with the scholarship coordinator to confirm accuracy; <strong>(2) Cross-validation</strong> — we compared interview data with direct observations during site visits to identify and resolve discrepancies. User requirements were also verified through prototype feedback during the User Design phase of RAD.`,
+            },
+            {
+              q: "What would you do differently if you were to redo this study?",
+              badge: "hot",
+              a: `We would: <strong>(1)</strong> conduct a broader initial survey to quantify the scale of the problem before proposing the solution; <strong>(2)</strong> explore a lightweight PHP framework to improve code maintainability; and <strong>(3)</strong> include mobile-responsive design from the start for smartphone accessibility. These would strengthen the system's long-term usability and maintainability.`,
+              tip: "Being able to self-reflect shows research maturity. Don't be afraid to answer this honestly — it actually impresses panels.",
+            },
+            {
+              q: "Is your system original? Isn't this just like any other scholarship system?",
+              badge: "hot",
+              a: `While scholarship systems exist, ours is original in three ways: <strong>(1)</strong> it addresses a municipality-level LGU context specifically — not a university or national agency; <strong>(2)</strong> it features per-scholarship document checklists with individual document verification status, which most similar systems lack; and <strong>(3)</strong> it reflects the actual governance structure of Sta. Praxedes, including the Mayor's approval role, LYDO coordination, and Budget Office involvement. The system was designed from actual interview and observation data, not from a generic template.`,
+            },
+            {
+              q: "What happens when the scholarship coordinator resigns or retires?",
+              badge: "hot",
+              a: `The system's administrator account management module allows the creation and management of multiple administrator accounts. If the coordinator leaves, a new authorized staff member can be given admin credentials. The system also maintains a complete application log, so all historical records are preserved regardless of personnel changes — unlike the current manual system where knowledge and records may be lost with personnel turnover.`,
+            },
+          ],
+        },
+      ];
+
+      const tabs = document.getElementById("tabs");
+      const main = document.getElementById("main");
+      let totalQ = 0,
+        revealed = 0;
+
+      S.forEach((sec, si) => {
+        totalQ += sec.questions.length;
+        const tab = document.createElement("button");
+        tab.className = "tab-btn" + (si === 0 ? " active" : "");
+        tab.textContent = sec.title;
+        tab.dataset.sec = sec.id;
+        tab.onclick = () => {
+          document
+            .querySelectorAll(".tab-btn")
+            .forEach((t) => t.classList.remove("active"));
+          document
+            .querySelectorAll(".section")
+            .forEach((s) => s.classList.remove("active"));
+          tab.classList.add("active");
+          document.getElementById("sec-" + sec.id).classList.add("active");
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        };
+        tabs.appendChild(tab);
+
+        const section = document.createElement("div");
+        section.className = "section" + (si === 0 ? " active" : "");
+        section.id = "sec-" + sec.id;
+
+        const prevId = si > 0 ? S[si - 1].id : null;
+        const nextId = si < S.length - 1 ? S[si + 1].id : null;
+
+        section.innerHTML = `
+    <div class="section-header">
+      <div class="section-icon" style="background:${sec.ibg}">${sec.icon}</div>
+      <div><div class="section-title">${sec.title}</div><div class="section-sub">${sec.sub}</div></div>
+    </div>
+    <button class="reveal-all-btn" onclick="revealAll('${sec.id}')">Reveal all answers in this section</button>
+  `;
+
+        sec.questions.forEach((q, qi) => {
+          const qid = `${sec.id}-${qi}`;
+          const bm = {
+            hot: "badge-hot",
+            key: "badge-key",
+            tech: "badge-tech",
+            std: "badge-std",
+          };
+          const bl = {
+            hot: "🔥 Must Know",
+            key: "⭐ Key",
+            tech: "💻 Technical",
+            std: "Standard",
+          };
+          const card = document.createElement("div");
+          card.className = "q-card";
+          card.id = "qcard-" + qid;
+          card.innerHTML = `
+      <div class="q-header" onclick="toggleAns('${qid}')">
+        <div class="q-left">
+          <div class="q-num">${qi + 1}</div>
+          <div class="q-text">${q.q}</div>
+        </div>
+        <div class="q-right">
+          <span class="q-badge ${bm[q.badge]}">${bl[q.badge]}</span>
+          <button class="reveal-btn" id="rb-${qid}" onclick="event.stopPropagation();revealAns('${qid}')">Show Answer</button>
+        </div>
+      </div>
+      <div class="q-answer" id="qa-${qid}">
+        <div class="answer-label">Ideal Answer</div>
+        <div class="answer-text">${q.a}</div>
+        ${
+          q.tip
+            ? `<div class="tip-box"><strong>💡 Tip:</strong> ${q.tip}</div>`
+            : ""
+        }
+      </div>
+    `;
+          section.appendChild(card);
+        });
+
+        section.innerHTML += `
+    <div class="section-nav">
+      <button class="nav-btn" ${!prevId ? "disabled" : ""} onclick="switchTo('${
+          prevId || ""
+        }')">← Previous</button>
+      <span style="font-size:12px;color:var(--muted)">${si + 1} / ${
+          S.length
+        }</span>
+      <button class="nav-btn primary" ${
+        !nextId ? "disabled" : ""
+      } onclick="switchTo('${nextId || ""}')">Next →</button>
+    </div>
+  `;
+        main.appendChild(section);
+      });
+
+      document.getElementById("tq").textContent = totalQ;
+
+      function toggleAns(qid) {
+        const a = document.getElementById("qa-" + qid);
+        if (!a.classList.contains("open")) revealAns(qid);
+        else a.classList.remove("open");
+      }
+      function revealAns(qid) {
+        const card = document.getElementById("qcard-" + qid);
+        const btn = document.getElementById("rb-" + qid);
+        const ans = document.getElementById("qa-" + qid);
+        if (!card.classList.contains("revealed")) {
+          card.classList.add("revealed");
+          btn.textContent = "✓ Reviewed";
+          revealed++;
+          document.getElementById("rq").textContent = revealed;
+          const pct = Math.round((revealed / totalQ) * 100);
+          document.getElementById("pb-inner").style.width = pct + "%";
+          document.getElementById("ptxt").textContent = pct + "% ready";
+        }
+        ans.classList.add("open");
+      }
+      function revealAll(secId) {
+        document
+          .getElementById("sec-" + secId)
+          .querySelectorAll(".q-card")
+          .forEach((c) => {
+            revealAns(c.id.replace("qcard-", ""));
+          });
+      }
+      function switchTo(secId) {
+        if (!secId) return;
+        document
+          .querySelectorAll(".tab-btn")
+          .forEach((t) =>
+            t.classList.toggle("active", t.dataset.sec === secId)
+          );
+        document
+          .querySelectorAll(".section")
+          .forEach((s) =>
+            s.classList.toggle("active", s.id === "sec-" + secId)
+          );
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    </script>
+  </body>
+</html>
